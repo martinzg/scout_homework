@@ -2,17 +2,16 @@ package pages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import utils.PageUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Getter
-public class HousingPage extends Page {
+public class HousingPage extends AbstractPage {
 
     @FindBy(id = "query")
     private WebElement searchBox;
@@ -23,12 +22,18 @@ public class HousingPage extends Page {
     @FindBy(xpath = "//div[@class='search-sort']//ul[@class='dropdown-list']")
     private WebElement sortDropdown;
 
-    private String SORT_OPTIONS_LOCATOR = "//li[contains(@class, 'dropdown-item mode ')]//a";
-    private String SEARCH_AUTOCOMPLETE_ITEMS_LOCATOR = "//ul[contains(@class, 'ui-autocomplete')]//a";
+    @FindBy(xpath = "//li[contains(@class, 'dropdown-item mode ')]//a")
+    private List<WebElement> sortOptions;
+
+    @FindBy(xpath = "//ul[contains(@class, 'ui-autocomplete')]//a")
+    private List<WebElement> searchAutoSuggestItems;
+
+    @FindBy(xpath = "//span[@class='result-meta']//span[@class='result-price']")
+    private List<WebElement> prices;
+
     private String PRICE_LOCATOR = "//span[@class='result-meta']//span[@class='result-price']";
 
-    public HousingPage(WebDriver driver) {
-        super(driver);
+    public HousingPage() {
         PageFactory.initElements(driver, this);
     }
 
@@ -36,15 +41,15 @@ public class HousingPage extends Page {
         return Pages.HOUSING;
     }
 
-    public List<String> getSortOptions() {
-        return PageUtils.getElementsWhenVisible(By.xpath(SORT_OPTIONS_LOCATOR))
+    public List<String> getSortOptionsList() {
+        return getElementsWhenVisible(sortOptions)
                 .stream()
                 .map(x -> x.getAttribute("title"))
                 .collect(Collectors.toList());
     }
 
     public void selectFromSortDropdown(String sortOption) {
-        PageUtils.getElementsWhenVisible(By.xpath(SORT_OPTIONS_LOCATOR))
+        getElementsWhenVisible(sortOptions)
                 .stream()
                 .filter(x -> x.getAttribute("title").equals(sortOption))
                 .findFirst()
@@ -52,7 +57,7 @@ public class HousingPage extends Page {
     }
 
     public void selectFromSearchAutoSuggest(String searchText) {
-        PageUtils.getElementsWhenVisible(By.xpath(SEARCH_AUTOCOMPLETE_ITEMS_LOCATOR))
+        getElementsWhenVisible(searchAutoSuggestItems)
                 .stream()
                 .filter(x -> x.getText().equals(searchText))
                 .findFirst()
@@ -61,26 +66,16 @@ public class HousingPage extends Page {
 
     public Boolean isPricesSortedAsc() {
         List<Integer> prices = getPrices();
-        for (int i = 0; i < prices.size() - 1; i++) {
-            if (prices.get(i) > prices.get(i + 1)) {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(0, prices.size() - 1).noneMatch(i -> prices.get(i) > prices.get(i + 1));
     }
 
     public Boolean isPricesSortedDesc() {
         List<Integer> prices = getPrices();
-        for (int i = 0; i < prices.size() - 1; i++) {
-            if (prices.get(i) < prices.get(i + 1)) {
-                return false;
-            }
-        }
-        return true;
+        return IntStream.range(0, prices.size() - 1).noneMatch(i -> prices.get(i) < prices.get(i + 1));
     }
 
     private List<Integer> getPrices() {
-        return driver.findElements(By.xpath(PRICE_LOCATOR))
+        return getElementsWhenVisible(prices)
                 .stream()
                 .map(WebElement::getText)
                 .filter(x -> x.contains("€"))

@@ -3,18 +3,39 @@ package utils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+
+import java.net.URL;
 
 public class WebDriverUtils {
 
     private static final String OS = System.getProperty("os.name").toLowerCase();
+    private static final String BROWSER = System.getProperty("browser");
 
-    public static WebDriver configureWebDriver() {
+    private static final String FIREFOX_WINDOWS_DRIVER_FILENAME = "geckodriver.exe";
+    private static final String FIREFOX_LINUX_DRIVER_FILENAME = "geckodriver_lin.exe";
+    private static final String CHROME_WINDOWS_DRIVER_FILENAME = "chromedriver_win.exe";
+    private static final String CHROME_LINUX_DRIVER_FILENAME = "chromedriver_lin.exe";
+
+
+    public static WebDriver getWebDriver() {
         if (isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver_win.exe");
+            return configureWebDriver(FIREFOX_WINDOWS_DRIVER_FILENAME, CHROME_WINDOWS_DRIVER_FILENAME);
         } else if (isUnix()) {
-            System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver_lin");
+            return configureWebDriver(FIREFOX_LINUX_DRIVER_FILENAME, CHROME_LINUX_DRIVER_FILENAME);
         }
-        return new ChromeDriver(new ChromeOptions());
+        throw new IllegalArgumentException("OS unknown");
+    }
+
+    private static WebDriver configureWebDriver(String firefoxLinuxDriverFilename, String chromeLinuxDriverFilename) {
+        if (BROWSER == null || BROWSER.toLowerCase().equals("firefox")) {
+            System.setProperty("webdriver.gecko.driver", getDriverLocation(firefoxLinuxDriverFilename));
+            return new FirefoxDriver(new FirefoxOptions());
+        } else {
+            System.setProperty("webdriver.chrome.driver", getDriverLocation(chromeLinuxDriverFilename));
+            return new ChromeDriver(new ChromeOptions());
+        }
     }
 
     private static boolean isWindows() {
@@ -23,5 +44,14 @@ public class WebDriverUtils {
 
     private static boolean isUnix() {
         return (OS.contains("nix") || OS.contains("nux"));
+    }
+
+    private static String getDriverLocation(String filename) {
+        ClassLoader classLoader = WebDriverUtils.class.getClassLoader();
+        URL resource = classLoader.getResource(filename);
+        if (resource == null) {
+            throw new IllegalArgumentException("file is not found!");
+        }
+        return resource.getPath();
     }
 }

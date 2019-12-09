@@ -1,28 +1,27 @@
 package pages;
 
-import extension.SeleniumExtension;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
-import static extension.SeleniumExtension.getDriver;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ExtendWith(SeleniumExtension.class)
 class HousingPageTest {
 
     private static final String SEARCH_INPUT = "3 bedroom";
     private static final String SORT_BY_PRICE_ASC = "sort by price, lowest to highest";
     private static final String SORT_BY_PRICE_DESC = "sort by price, highest to lowest";
-    private HousingPage page;
+
+    private HousingPage page = new HousingPage();
 
     @BeforeEach
     public void init() {
-        page = new HousingPage(getDriver());
         page.open();
+    }
+
+    @AfterEach
+    public void tearDown() {
+        page.close();
     }
 
     @Test
@@ -30,7 +29,7 @@ class HousingPageTest {
     public void testDefaultSortingOptions() {
         page.getSortDropdown().click();
 
-        List<String> sortOptions = page.getSortOptions();
+        List<String> sortOptions = page.getSortOptionsList();
         assertEquals(4, sortOptions.size(), "check available sort options");
         assertEquals("show newest matches first", sortOptions.get(1), "check newest");
         assertEquals("sort by price, lowest to highest", sortOptions.get(2), "check price acs");
@@ -42,10 +41,10 @@ class HousingPageTest {
     public void testSortingOptionsAfterSearch() {
         page.getSearchBox().sendKeys(SEARCH_INPUT);
         page.selectFromSearchAutoSuggest(SEARCH_INPUT);
-        page.waitToBeLoaded();
+        page.waitForPageLoadComplete();
         page.getSortDropdown().click();
 
-        List<String> sortOptions = page.getSortOptions();
+        List<String> sortOptions = page.getSortOptionsList();
         assertEquals(5, sortOptions.size(), "check available sort options");
         assertEquals("show upcoming open houses", sortOptions.get(0), "check upcoming");
         assertEquals("show newest matches first", sortOptions.get(1), "check newest");
@@ -59,7 +58,7 @@ class HousingPageTest {
     public void testSortingByPriceAsc() {
         page.getSortDropdown().click();
         page.selectFromSortDropdown(SORT_BY_PRICE_ASC);
-        page.waitToBeLoaded();
+        page.waitForPageLoadComplete();
 
         assertEquals(true, page.isPricesSortedAsc(), "is prices sorted from lowest to highest");
     }
@@ -69,7 +68,7 @@ class HousingPageTest {
     public void testSortingByPriceDesc() {
         page.getSortDropdown().click();
         page.selectFromSortDropdown(SORT_BY_PRICE_DESC);
-        page.waitToBeLoaded();
+        page.waitForPageLoadComplete();
 
         assertEquals(true, page.isPricesSortedDesc(), "is prices sorted from highest to lowest");
     }
