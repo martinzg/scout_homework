@@ -1,7 +1,6 @@
 package pages;
 
 import lombok.Getter;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -64,22 +63,22 @@ public class HousingPage extends AbstractPage {
                 .ifPresent(WebElement::click);
     }
 
-    public Boolean isPricesSortedAsc() {
-        List<Integer> prices = getPrices();
+    public Boolean isPricesSortedAsc(String currency) {
+        List<Integer> prices = getPrices(currency);
         return IntStream.range(0, prices.size() - 1).noneMatch(i -> prices.get(i) > prices.get(i + 1));
     }
 
-    public Boolean isPricesSortedDesc() {
-        List<Integer> prices = getPrices();
+    public Boolean isPricesSortedDesc(String currency) {
+        List<Integer> prices = getPrices(currency);
         return IntStream.range(0, prices.size() - 1).noneMatch(i -> prices.get(i) < prices.get(i + 1));
     }
 
-    private List<Integer> getPrices() {
+    private List<Integer> getPrices(String currency) {
         return getElementsWhenVisible(prices)
                 .stream()
                 .map(WebElement::getText)
-                .filter(x -> x.contains("€"))
-                .map(x -> x.substring(1))
+                .filter(x -> x.contains(currency))
+                .map(x -> x.replaceAll("\\D+",""))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
     }

@@ -13,10 +13,10 @@ public class WebDriverUtils {
     private static final String OS = System.getProperty("os.name").toLowerCase();
     private static final String BROWSER = System.getProperty("browser");
 
-    private static final String FIREFOX_WINDOWS_DRIVER_FILENAME = "geckodriver.exe";
+    private static final String FIREFOX_WINDOWS_DRIVER_FILENAME = "geckodriver_win64.exe";
     private static final String FIREFOX_LINUX_DRIVER_FILENAME = "geckodriver_lin.exe";
     private static final String CHROME_WINDOWS_DRIVER_FILENAME = "chromedriver_win.exe";
-    private static final String CHROME_LINUX_DRIVER_FILENAME = "chromedriver_lin.exe";
+    private static final String CHROME_LINUX_DRIVER_FILENAME = "chromedriver_lin";
 
 
     public static WebDriver getWebDriver() {
@@ -25,7 +25,7 @@ public class WebDriverUtils {
         } else if (isUnix()) {
             return configureWebDriver(FIREFOX_LINUX_DRIVER_FILENAME, CHROME_LINUX_DRIVER_FILENAME);
         }
-        throw new IllegalArgumentException("OS unknown");
+        throw new IllegalArgumentException("unsupported OS");
     }
 
     private static WebDriver configureWebDriver(String firefoxLinuxDriverFilename, String chromeLinuxDriverFilename) {

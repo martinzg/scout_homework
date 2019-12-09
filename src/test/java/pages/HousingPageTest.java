@@ -60,7 +60,7 @@ class HousingPageTest {
         page.selectFromSortDropdown(SORT_BY_PRICE_ASC);
         page.waitForPageLoadComplete();
 
-        assertEquals(true, page.isPricesSortedAsc(), "is prices sorted from lowest to highest");
+        assertEquals(true, page.isPricesSortedAsc("€"), "is prices sorted from lowest to highest");
     }
 
     @Test
@@ -70,6 +70,6 @@ class HousingPageTest {
         page.selectFromSortDropdown(SORT_BY_PRICE_DESC);
         page.waitForPageLoadComplete();
 
-        assertEquals(true, page.isPricesSortedDesc(), "is prices sorted from highest to lowest");
+        assertEquals(true, page.isPricesSortedDesc("€"), "is prices sorted from highest to lowest");
     }
 }
