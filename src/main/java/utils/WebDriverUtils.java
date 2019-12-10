@@ -14,7 +14,7 @@ public class WebDriverUtils {
     private static final String BROWSER = System.getProperty("browser");
 
     private static final String FIREFOX_WINDOWS_DRIVER_FILENAME = "geckodriver_win64.exe";
-    private static final String FIREFOX_LINUX_DRIVER_FILENAME = "geckodriver_lin.exe";
+    private static final String FIREFOX_LINUX_DRIVER_FILENAME = "geckodriver_lin64";
     private static final String CHROME_WINDOWS_DRIVER_FILENAME = "chromedriver_win.exe";
     private static final String CHROME_LINUX_DRIVER_FILENAME = "chromedriver_lin";
 
