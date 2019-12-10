@@ -16,8 +16,7 @@
         <junit-version>5.5.2</junit-version>
         <lombok-version>1.18.8</lombok-version>
         <maven-surefire-plugin-version>2.22.0</maven-surefire-plugin-version>
-        <allure-junit5-version>2.7.0</allure-junit5-version>
-        <allure-maven-version>2.9</allure-maven-version>
+        <allure-version>2.10.0</allure-version>
         <aspectj-version>1.8.10</aspectj-version>
         <junit-platform-surefire-provider-version>1.2.0</junit-platform-surefire-provider-version>
     </properties>
@@ -56,12 +55,18 @@
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-junit5</artifactId>
-            <version>${allure-junit5-version}</version>
+            <version>${allure-version}</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-maven</artifactId>
-            <version>${allure-maven-version}</version>
+            <version>${allure-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-java-commons</artifactId>
+            <version>${allure-version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -72,6 +77,26 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>process-test-classes</id>
+                        <phase>process-test-classes</phase>
+                        <configuration>
+                            <target>
+                                <chmod file="target/classes/geckodriver_lin64" perm="777"/>
+                                <chmod file="target/classes/chromedriver_lin" perm="777"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -122,7 +147,7 @@
             <plugin>
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
-                <version>${allure-maven-version}</version>
+                <version>${allure-version}</version>
             </plugin>
         </plugins>
     </build>
