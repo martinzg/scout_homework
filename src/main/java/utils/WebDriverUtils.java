@@ -28,14 +28,15 @@ public class WebDriverUtils {
         throw new IllegalArgumentException("unsupported OS");
     }
 
-    private static WebDriver configureWebDriver(String firefoxLinuxDriverFilename, String chromeLinuxDriverFilename) {
+    private static WebDriver configureWebDriver(String firefoxDriverFilename, String chromeDriverFilename) {
         if (BROWSER == null || BROWSER.toLowerCase().equals("firefox")) {
-            System.setProperty("webdriver.gecko.driver", getDriverLocation(firefoxLinuxDriverFilename));
+            System.setProperty("webdriver.gecko.driver", getDriverLocation(firefoxDriverFilename));
             return new FirefoxDriver(new FirefoxOptions());
-        } else {
-            System.setProperty("webdriver.chrome.driver", getDriverLocation(chromeLinuxDriverFilename));
+        } else if(BROWSER.toLowerCase().equals("chrome")) {
+            System.setProperty("webdriver.chrome.driver", getDriverLocation(chromeDriverFilename));
             return new ChromeDriver(new ChromeOptions());
         }
+        throw new IllegalArgumentException("unsupported Browser");
     }
 
     private static boolean isWindows() {
