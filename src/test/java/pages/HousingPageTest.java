@@ -31,10 +31,10 @@ class HousingPageTest {
         page.getSortDropdown().click();
 
         List<String> sortOptions = page.getSortOptionsList();
-        assertEquals(4, sortOptions.size(), "check available sort options");
-        assertEquals("show newest matches first", sortOptions.get(1), "check newest");
-        assertEquals("sort by price, lowest to highest", sortOptions.get(2), "check price acs");
-        assertEquals("sort by price, highest to lowest", sortOptions.get(3), "check price desc");
+        assertEquals(3, sortOptions.size(), "check available sort options");
+        assertEquals("show newest matches first", sortOptions.get(0), "check newest");
+        assertEquals("sort by price, lowest to highest", sortOptions.get(1), "check price acs");
+        assertEquals("sort by price, highest to lowest", sortOptions.get(2), "check price desc");
     }
 
     @Test
