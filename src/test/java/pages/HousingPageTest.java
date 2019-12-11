@@ -12,10 +12,11 @@ class HousingPageTest {
     private static final String SORT_BY_PRICE_ASC = "sort by price, lowest to highest";
     private static final String SORT_BY_PRICE_DESC = "sort by price, highest to lowest";
 
-    private HousingPage page = new HousingPage();
+    private HousingPage page;
 
     @BeforeEach
     public void init() {
+        page =  new HousingPage();
         page.open();
     }
 

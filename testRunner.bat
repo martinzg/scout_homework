@@ -8,4 +8,4 @@ if %number% == "1" (
 if  %number% == 2 (
    set browser="firefox"
 )
-mvn test -Dbrowser=%browser% & allure generate --clean & xcopy /e/y/i allure-report\history allure-results\history && allure serve --host localhost
+mvn clean test -Dbrowser=%browser% & mvn allure:report && xcopy /e/y/i allure-report\history allure-results\history

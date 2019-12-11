@@ -148,6 +148,11 @@
                 <groupId>io.qameta.allure</groupId>
                 <artifactId>allure-maven</artifactId>
                 <version>${allure-version}</version>
+                <configuration>
+                    <serveHost>localhost</serveHost>
+                    <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
+                    <reportDirectory>${project.basedir}/allure-report</reportDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

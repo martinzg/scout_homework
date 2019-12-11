@@ -30,7 +30,7 @@ public abstract class AbstractPage {
     }
 
     public void close() {
-        driver.close();
+        driver.quit();
     }
 
     public void smartClick(WebElement webElement) {
