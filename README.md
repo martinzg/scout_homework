@@ -3,6 +3,8 @@
 Overview:
 - testing -> Selenium + JUnit5
 - reporting -> Allure
+- browsers supported -> Chrome and Firefox
+- OS supported -> Windows 64bit and Linux 64bit
 
 To execute tests please run:
 - for Windows -> testRunner.bat
