@@ -149,8 +149,6 @@
                 <artifactId>allure-maven</artifactId>
                 <version>${allure-version}</version>
                 <configuration>
-                    <serveHost>127.0.0.1</serveHost>
-                    <servePort>8080</servePort>
                     <resultsDirectory>${project.basedir}/allure-results</resultsDirectory>
                     <reportDirectory>${project.basedir}/allure-report</reportDirectory>
                 </configuration>

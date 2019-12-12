@@ -9,3 +9,4 @@ echo "Browser chosen: " $browser
 mvn clean test -Dbrowser=$browser
 mvn allure:report
 cp -avr allure-report/history allure-results
+.allure/allure-2.8.1/bin/allure open --host localhost
